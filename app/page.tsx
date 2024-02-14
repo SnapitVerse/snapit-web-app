@@ -2,6 +2,7 @@
 import React from 'react';
 import NFTGrid from './components/NFTGrid';
 import { NFT, getOwnerTokens } from './services/snapit-api';
+import SvgMap from './components/SvgMap';
 
 
 
@@ -13,7 +14,11 @@ const Home: React.FC = async () => {
     <div className="container mx-auto">
       <h1 className="text-4xl font-bold my-8">NFT Gallery</h1>
       <NFTGrid nfts={nfts} />
+      <div>
+      <SvgMap/>
+      </div>
     </div>
+
   );
 };
 
