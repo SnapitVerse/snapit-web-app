@@ -1,0 +1,51 @@
+<path class="cls-1" d="M-31 92h89v105h-89Z"/>
+<path class="cls-1" d="M-31 210h89v108h-89Z"/>
+<path class="cls-1" d="M-31 334h89v101h-89Z"/>
+<path class="cls-1" d="M-31 449h89v101h-89Z"/>
+<path class="cls-1" d="M-31 564h89v117h-89Z"/>
+<path class="cls-1" d="M72 211.33h40.67v106.67h-40.67Z"/>
+<path class="cls-1" d="M72 116h40.67v24.33h-40.67Z"/>
+<path class="cls-1" d="M125.67 116h20v24.33h-20Z"/>
+<path class="cls-1" d="M160 116h27.67v24.33H160Z"/>
+<path class="cls-1" d="M125.67 154.33h62v42.67h-62Z"/>
+<path class="cls-1" d="M72 154.33h40.67v42.67H72Z"/>
+<path class="cls-1" d="M72 213l1.67 105 39 -105h-40.67Z"/>
+<path class="cls-1" d="M127 210l-1.33 108 62 0 -1.33 -108h-59.34Z"/>
+<path class="cls-1" d="M202.33 213h95.67v105h-95.67Z"/>
+<path class="cls-1" d="M73.67 333.33h114v101.67h-114Z"/>
+<path class="cls-1" d="M202.33 333.33h93.67v101.67h-93.67Z"/>
+<path class="cls-1" d="M313 213h96.33v102.67H313Z"/>
+<path class="cls-1" d="M316 335.33l0 99.67 93.33 -1.33 0 -100.34 -93.33 2Z"/>
+<path class="cls-1" d="M73.67 449h-1.67l-1.67 101 40.67 1.33 0 -101h-37.33Z"/>
+<path class="cls-1" d="M125.67 449h21v101h-21Z"/>
+<path class="cls-1" d="M161.33 449h-1.33l-1.33 101 29 1 1 -102Z"/>
+<path class="cls-1" d="M202.33 449h-1.33l-1.33 101 97 1.33 0 -101h-94.34Z"/>
+<path class="cls-1" d="M316 449l0 101 93.33 1.33 0 -100.66 -93.33 -2Z"/>
+<path class="cls-1" d="M316 566.67l0 32.33 93.33 0 0 -35.33 -93.33 3Z"/>
+<path class="cls-1" d="M201 565.67h95v115.33h-95Z"/>
+<path class="cls-1" d="M125.67 564l0 63 62 1.33 0 -63h-62Z"/>
+<path class="cls-1" d="M73.67 564h39v64.33h-39Z"/>
+<path class="cls-1" d="M424 213l0 105 112 -1.33 0 -106 -112 2.33Z"/>
+<path class="cls-1" d="M550 211.67l0 106 91.33 -1.33 0 -106 -91.33 1.66Z"/>
+<path class="cls-1" d="M498.67 333.33h37.33v52.67h-37.33Z"/>
+<path class="cls-1" d="M422.67 333.33h61.67v52.67h-61.67Z"/>
+<path class="cls-1" d="M422.67 402.67h61.67v32.33h-61.67Z"/>
+<path class="cls-1" d="M498.67 402.67l1.33 32.33 36.67 1.33 0 -33.66 -38 0Z"/>
+<path class="cls-1" d="M422.67 451h61.67v99h-61.67Z"/>
+<path class="cls-1" d="M499.83 450h35v99h-35Z"/>
+<path class="cls-1" d="M550 451h92.33v100.33H550Z"/>
+<path class="cls-1" d="M550 333.33l0 101 92.33 1.33 0 -101 -92.33 -1.33Z"/>
+<path class="cls-1" d="M499.83 565.67l0 34.66 36.17 0 -1.17 -34.66 -35 0Z"/>
+<path class="cls-1" d="M482.33 565.67l-58.33 0 0 33.33 58.33 0 0 -33.33Z"/>
+<path class="cls-1" d="M548.67 91h93.67v106.67h-93.67Z"/>
+<path class="cls-1" d="M422.67 89.67l0 49.66 61.66 0 0 -48.33 -61.66 -1.33Z"/>
+<path class="cls-1" d="M498.67 91h37.33v48.33h-37.33Z"/>
+<path class="cls-1" d="M498.67 154.67h37.33v43h-37.33Z"/>
+<path class="cls-1" d="M422.67 154.67h61.67v43h-61.67Z"/>
+<path class="cls-1" d="M313 154.67l0 42.33 96.33 0 0 -43.17 -96.33 0Z"/>
+<path class="cls-1" d="M313 116l0 25.67 96.33 0 0 -27.17 -96.33 1.5Z"/>
+<path class="cls-1" d="M200.33 115.17l0 82.5 95.67 0 0 -82.5 -95.67 0Z"/>
+<path class="cls-1" d="M200.33 -8l0 109 97.67 0 1.33 -109 -99 0Z"/>
+<path class="cls-1" d="M424 35.56h112v39.56h-112Z"/>
+<path class="cls-1" d="M316 -16l0 117 96.33 0 0 -117 -96.33 0Z"/>
+<path class="cls-1" d="M73.67 641.78h39v40.22h-39Z"/>
