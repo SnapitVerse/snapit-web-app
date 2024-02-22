@@ -1,79 +1,100 @@
-'use client'
-import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
+"use client";
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
+import { useRouter } from "next/navigation";
+
+import pathData from "../fixtures/mapPaths.json";
 
 const SvgMap: React.FC = () => {
+  const router = useRouter();
   const svgRef = useRef<SVGSVGElement>(null);
 
+  const width = 1024;
+  const height = 1024;
+
   useEffect(() => {
+    const handleMapSegmentClick = (segmentI: string) => {
+      // Update the URL with the selected segment ID as a query parameter
+      router.push(`?selectedSegment=${segmentI}`, { scroll: false });
+    };
     // Ensure D3 code runs only on the client-side
     if (typeof window !== "undefined" && svgRef.current) {
-      const svg = d3.select(svgRef.current);
+      const svg = d3
+        .select(svgRef.current)
+        .attr("viewBox", [0, 0, width, height])
+        .attr("width", width)
+        .attr("height", height)
+        .attr("style", "max-width: 100%; height: auto;");
+      // .on("click", () => {
+      //   svg
+      //     .transition()
+      //     .duration(750)
+      //     .call(
+      //       zoom.transform as any,
+      //       d3.zoomIdentity,
+      //       d3.zoomTransform(svg.node() as any).invert([width / 2, height / 2])
+      //     );
+      // });
 
-      // Attach an SVG image as the map background
-      svg.append('image')
-        .attr('href', '/cat.jpg') // Path to your SVG map image
-        .attr('transform', 'scale(0.5)')
+      const g = svg.append("g");
 
-      // Define interactive paths separately
-    //   const pathsData = [
-    //     { d: 'M297,1v296H1V1h296M298,0H0v298h298V0h0Z', id: 'segment-1' },
-    //     { d: 'M595,1v296h-296V1h296M596,0h-298v298h298V0h0Z', id: 'segment-2' },
-    //     { d: 'M297,299v296H1v-296h296M298,298H0v298h298v-298h0Z', id: 'segment-3' },
-    //     { d: 'M595,299v296h-296v-296h296M596,298h-298v298h298v-298h0Z', id: 'segment-4' },
-    //     { d: 'M893,1v296h-296V1h296M894,0h-298v298h298V0h0Z', id: 'segment-5' },
-    //     { d: 'M1191,1v296h-296V1h296M1192,0h-298v298h298V0h0Z', id: 'segment-6' },
-    //     { d: 'M893,299v296h-296v-296h296M894,298h-298v298h298v-298h0Z', id: 'segment-7' },
-    //     { d: 'M1191,299v296h-296v-296h296M1192,298h-298v298h298v-298h0Z', id: 'segment-8' },
-    //     { d: 'M297,597v296H1v-296h296M298,596H0v298h298v-298h0Z', id: 'segment-9' },
-    //     { d: 'M595,597v296h-296v-296h296M596,596h-298v298h298v-298h0Z', id: 'segment-10' },
-    //     { d: 'M297,895v296H1v-296h296M298,894H0v298h298v-298h0Z', id: 'segment-11' },
-    //     { d: 'M595,895v296h-296v-296h296M596,894h-298v298h298v-298h0Z', id: 'segment-12' },
-    //     { d: 'M893,597v296h-296v-296h296M894,596h-298v298h298v-298h0Z', id: 'segment-13' },
-    //     { d: 'M1191,597v296h-296v-296h296M1192,596h-298v298h298v-298h0Z', id: 'segment-14' },
-    //     { d: 'M893,895v296h-296v-296h296M894,894h-298v298h298v-298h0Z', id: 'segment-15' },
-    //     { d: 'M1191,895v296h-296v-296h296M1192,894h-298v298h298v-298h0Z', id: 'segment-16' },
-    //     // Add more path data objects with 'd' and 'id' properties
-    //   ];
+      const zoom = d3
+        .zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", (event) => {
+          const { transform } = event;
+          g.attr("transform", transform);
+          g.attr("stroke-width", 1 / transform.k);
+        });
 
-      const pathsData = [
-        { d: 'M1 1 H297 V297 H1 Z', id: 'segment-1' },
-        { d: 'M298 1 H595 V297 H298 Z', id: 'segment-2' },
-        { d: 'M1 298 H297 V595 H1 Z', id: 'segment-3' },
-        { d: 'M298 298 H595 V595 H298 Z', id: 'segment-4' },
-        { d: 'M596 1 H893 V297 H596 Z', id: 'segment-5' },
-        { d: 'M894 1 H1191 V297 H894 Z', id: 'segment-6' },
-        { d: 'M596 298 H893 V595 H596 Z', id: 'segment-7' },
-        { d: 'M894 298 H1191 V595 H894 Z', id: 'segment-8' },
-        // Continue for the remaining segments...
-      ];
+      // Attach an image as the map background
+      g.append("image").attr("href", "/mapdemo.png");
+
+      zoom.translateExtent([
+        [0, 0],
+        [width, height],
+      ]);
+
+      svg.call(zoom as any);
 
       // Create and style paths based on pathsData
-      pathsData.forEach(pathData => {
-        svg.append('path')
-          .attr('d', pathData.d)
-          .attr('id', pathData.id)
-          .attr('transform', 'scale(0.5)')
-          .style('stroke', 'blue')
-        //   .style('stroke-width', '5')
-        //   .style('pointer-events', 'all')
-          .style('fill', 'transparent')
-          .style('fill-rule', 'evenodd')
-          .on('mouseenter', function() {
+      pathData.forEach((path) => {
+        g.append("path")
+          .attr("d", path.d)
+          .attr("id", path.id)
+          .attr("transform", "translate(205,114)")
+          // .style("stroke", "red")
+          // .style("stroke-width", "5")
+          //   .style('pointer-events', 'all')
+          .style("fill", "transparent")
+          .style("fill-rule", "evenodd")
+          .on("mouseenter", function () {
             // d3.select(this).style('stroke', 'red'); // Highlight on hover
-            d3.select(this).style('fill', 'red'); // Highlight on hover
+            d3.select(this)
+              .transition()
+              .duration(300)
+              .style("fill", "rgba(200,200,200,0.7)"); // Highlight on hover
           })
-          .on('mouseleave', function() {
-            d3.select(this).style('fill', 'transparent'); // Revert on mouse leave
+          .on("mouseleave", function () {
+            d3.select(this).interrupt().style("fill", "transparent"); // Revert on mouse leave
+          })
+          .on("click", function () {
+            d3.selectAll("path")
+              .style("stroke", null)
+              .style("stroke-width", null);
+            handleMapSegmentClick(path.id);
+            d3.select(this).style("stroke", "blue").style("stroke-width", "5");
           });
       });
     }
   }, []);
 
   return (
-    <svg ref={svgRef} width="1192" height="1192" viewBox="0 0 1192 1192">
-      {/* Paths will be appended dynamically by D3.js */}
-    </svg>
+    <div className="map-container rounded-2xl">
+      <svg ref={svgRef} width="%100" height="%100">
+        {/* Paths will be appended dynamically by D3.js */}
+      </svg>
+    </div>
   );
 };
 
