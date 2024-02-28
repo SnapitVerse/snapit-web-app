@@ -3,23 +3,30 @@ import NFTGrid from "./components/NFTGrid";
 import { NFT, getOwnerTokens } from "./services/snapit-api";
 import SvgMap from "./components/SvgMap";
 import NFTHighlight from "./components/NFTHighlight";
+import AuctionCard from "./components/AuctionCard";
+import MetamaskButton from "./components/MetamaskButton";
 
 const Home: React.FC<{
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | undefined };
 }> = async ({ searchParams }) => {
   // const nfts = await getOwnerTokenList()
 
   const { selectedSegment } = searchParams;
-  const segment: string = selectedSegment ? (selectedSegment as string) : "";
+  const tokenId: number | undefined = selectedSegment
+    ? +selectedSegment.split("-")[1]
+    : undefined;
   return (
     <div className="container mx-auto mr-24">
-      <div className="flex items-start space-x-4 mb-8 mx-32">
-        <img
-          src="snapitWorldLogo.png"
-          alt="SnapitWorld"
-          className="size-1/3 mt-4"
-        />
-        <h4 className="text-3xl font-bold my-8 ml-16 text-[#f4ebf1]">MAP</h4>
+      <div className="container mx-auto flex flex-row justify-between items-center mb-8 mx-32 bg-black">
+        <div className="flex flex-row items-center space-x-4">
+          <img
+            src="snapitWorldLogo.png"
+            alt="SnapitWorld"
+            className="w-1/3 mt-4"
+          />
+          <h4 className="text-3xl font-bold my-8 text-[#f4ebf1]">MAP</h4>
+        </div>
+        <MetamaskButton />
       </div>
 
       <NFTGrid nfts={[]} />
@@ -28,8 +35,13 @@ const Home: React.FC<{
         <div className="flex-none mr-1  border-8 rounded border-emerald-950 border-double shrink-0 size-4/5">
           <SvgMap />
         </div>
-        <div className="flex-none max-w-xs bg-white shadow-lg rounded-lg overflow-hidden mr-1 ">
-          <NFTHighlight selectedSegment={segment} initialData={null} />
+        <div className="flex flex-col ">
+          <div className="flex-none max-w-xs bg-white shadow-lg rounded-lg overflow-hidden mr-1 mb-2">
+            <NFTHighlight tokenId={tokenId} initialData={null} />
+          </div>
+          <div className="flex-none max-w-xs bg-white shadow-lg rounded-lg overflow-hidden mr-1 ">
+            <AuctionCard tokenId={tokenId} />
+          </div>
         </div>
       </div>
     </div>
