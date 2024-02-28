@@ -2,6 +2,7 @@ import React from "react";
 import { NFTMetadata } from "../services/snapit-api";
 import CopyButton from "./CopyButton";
 import BscScanButton from "./BscScanButton";
+import { imageSelector } from "@/utils/utils";
 
 interface NFTCardProps {
   token_id: number;
@@ -11,11 +12,6 @@ interface NFTCardProps {
 }
 
 const NFTCard: React.FC<NFTCardProps> = ({ token_id, metadata, owner }) => {
-  const copyToClipboard = () => {
-    "use client";
-    if (owner) navigator.clipboard.writeText(owner);
-    // Optionally, add feedback to the user (e.g., tooltip, toast notification)
-  };
   return (
     <div className="nft-card bg-white shadow-lg rounded-lg overflow-hidden">
       {metadata && (
@@ -58,11 +54,6 @@ const NFTCard: React.FC<NFTCardProps> = ({ token_id, metadata, owner }) => {
       )}
     </div>
   );
-};
-
-const imageSelector = (id: number) => {
-  const imageId = id % 6;
-  return `nfts/image-${imageId}.png`;
 };
 
 export default NFTCard;

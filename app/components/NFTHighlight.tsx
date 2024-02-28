@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { getNFT } from "../services/snapit-api";
-import { metadata } from "../layout";
+
 import NFTCard from "./NFTCard";
 
 interface NFTHighlightProps {
-  selectedSegment?: string;
+  tokenId?: number;
   // Initial data might be null if it's not available at first
   initialData: any | null; // Adjust the type based on your data structure
 }
 
 const NFTHighlight: React.FC<NFTHighlightProps> = async ({
-  selectedSegment,
+  tokenId,
   initialData,
 }) => {
-  const nftDetails = selectedSegment
-    ? await getNFTDetails(selectedSegment)
-    : null;
+  const nftDetails = tokenId ? await getNFTDetails(tokenId) : null;
   return (
     <div className="nft-highlight ">
       {nftDetails && (
@@ -30,8 +28,7 @@ const NFTHighlight: React.FC<NFTHighlightProps> = async ({
 };
 
 // Assuming getNFT is your server-side fetch function
-async function getNFTDetails(selectedSegment: string) {
-  const tokenId = +selectedSegment.split("-")[1];
+async function getNFTDetails(tokenId: number) {
   const nft = await getNFT(tokenId, true);
   return nft;
 }
