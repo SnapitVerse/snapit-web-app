@@ -1,10 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { useMetaMask } from "../contexts/MetamaskContext";
-import MetamaskAccountCard from "./MetamaskAccountCard";
+import React, { useEffect, useState } from "react";
 import { AuctionData } from "../services/snapit-api";
 import { timestampDeltaNow } from "@/utils/utils";
-import { claimAuction } from "../services/auction-contract";
+import { bidAuction, claimAuction } from "../services/auction-contract";
 
 interface AuctionActionsProps {
   auctionData: AuctionData;
@@ -16,8 +14,6 @@ const AuctionActions: React.FC<AuctionActionsProps> = ({
   auctionData,
   tokenId,
 }) => {
-  const { account, connectToMetaMask } = useMetaMask();
-
   const nextAvailableMinimumBid =
     BigInt(auctionData.bidPrice) + BigInt(auctionData.minPriceDifference);
 
@@ -28,21 +24,34 @@ const AuctionActions: React.FC<AuctionActionsProps> = ({
   const [bidDisabled, setBidDisabled] = useState(false);
 
   const handleBidPriceInput = (value: string) => {
-    setBidPrice(value);
-    setBidDisabled(isValidPrice() ? false : true);
-  };
-
-  const isValidPrice = () => {
-    return BigInt(bidPrice) >= nextAvailableMinimumBid;
+    let newValue = value;
+    if (auctionData.buyoutPrice < BigInt(value)) {
+      newValue = BigInt(auctionData.buyoutPrice).toString(10);
+    }
+    setBidPrice(newValue);
   };
 
   const isExpired = () => {
     return timestampDeltaNow(auctionData.endTime) <= 0;
   };
 
-  const handleClaimClick = async () => {
+  const handleClaimClick = async (event: React.MouseEvent) => {
+    event.preventDefault();
     await claimAuction((window as any).ethereum, tokenId);
   };
+
+  const handleBidClick = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    await bidAuction((window as any).ethereum, tokenId, BigInt(bidPrice));
+  };
+
+  useEffect(() => {
+    const isValidPrice = () => {
+      return BigInt(bidPrice) >= nextAvailableMinimumBid;
+    };
+
+    setBidDisabled(isValidPrice() ? false : true);
+  }, [bidPrice, nextAvailableMinimumBid]);
 
   return (
     <div>
@@ -54,7 +63,7 @@ const AuctionActions: React.FC<AuctionActionsProps> = ({
                 <button
                   className="rounded-lg shadow bg-orange-300 h-8 w-20 text-white"
                   disabled={bidDisabled}
-                  onClick={() => console.log("BIDDED!")}
+                  onClick={handleBidClick}
                 >
                   Bid
                 </button>

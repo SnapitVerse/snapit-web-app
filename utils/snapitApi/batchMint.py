@@ -1,7 +1,8 @@
 import requests
 import time
 from randomWord import getRandomWords
-
+import json
+# url = 'https://test-api.snapit.world/api/mint'
 url = 'http://localhost:3030/api/mint'
 
 def mint(start, end):
@@ -14,15 +15,28 @@ def mint(start, end):
             "token_id": id,
             "metadata": {
                 "name": name,
-                "kind": 1,
                 "description": description,
-                "image": "",
-                "properties": {
-                    "prop1": "prop1"
-                }
-            }
+                "image": "https://nftimages.s3.eu-central-1.amazonaws.com/NFTs/image-" + str(id % 6)  + ".png",
+                "external_url": "https://test.snapit.world",
+                "attributes": [
+                    {
+                        "trait_type": getRandomWords(1),
+                        "value": getRandomWords(1),
+                    },
+                    {
+                        "trait_type": getRandomWords(1),
+                        "value": getRandomWords(1),
+                    },
+                    {
+                        "trait_type": getRandomWords(1),
+                        "value": getRandomWords(1),
+                    },
+                ],
+            },
+            "wait_confirmation": True
         }
         print('Sending id: ', id)
+        print(json.dumps(data, indent=2))
         response = requests.post(url, json=data)
         # Print the status code of the response
         print(f'Status Code: {response.status_code}')
@@ -30,4 +44,4 @@ def mint(start, end):
         print(f'Response Content: {response.text}')
         time.sleep(0.5)
 
-mint(81,100)
+mint(6,6)

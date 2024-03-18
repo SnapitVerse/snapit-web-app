@@ -1,5 +1,6 @@
 "use server";
 import { cache } from "react";
+import { emptyAuctionDetails } from "../helpers/helper";
 
 export interface NFT {
   id: string;
@@ -64,7 +65,7 @@ export const getOwnerTokens = async (ownerAddress: string): Promise<NFT[]> => {
 
 export const getAuctionDetails = async (
   token_id: number
-): Promise<AuctionDetails | undefined> => {
+): Promise<AuctionDetails> => {
   const url = process.env.BACKEND_URL; // Accessing the server-side environment variable
 
   // Use the secret API key in your server-side logic
@@ -78,7 +79,7 @@ export const getAuctionDetails = async (
 
   const auctionDataResponse = await response.json();
 
-  let auctionDetails = undefined;
+  let auctionDetails: AuctionDetails = emptyAuctionDetails;
 
   if (auctionDataResponse !== "Auction not found!")
     auctionDetails = apiResultToActionDetails(auctionDataResponse);
@@ -86,7 +87,7 @@ export const getAuctionDetails = async (
   return auctionDetails;
 };
 
-type AuctionDetails = {
+export type AuctionDetails = {
   auctionData: AuctionData;
   bidHistory: Bid[];
 };

@@ -1,11 +1,13 @@
 import React from "react";
-import { NFTMetadata, getAuctionDetails } from "../services/snapit-api";
+import { NFTMetadata, getAuctionDetails, getNFT } from "../services/snapit-api";
 import CopyButton from "./CopyButton";
 import BscScanButton from "./BscScanButton";
 import { imageSelector } from "@/utils/utils";
 import BidCard from "./BidCard";
 import CountdownTimer from "./CountdownTimer";
 import AuctionActions from "./AuctionActions";
+import CreateAuctionForm from "./CreateAuctionForm";
+import { emptyAuctionDetails } from "../helpers/helper";
 
 interface AuctionCardProps {
   tokenId: number | undefined;
@@ -13,13 +15,22 @@ interface AuctionCardProps {
 }
 
 const AuctionCard: React.FC<AuctionCardProps> = async ({ tokenId }) => {
-  const auctionDetails = tokenId ? await getAuctionDetails(tokenId) : undefined;
-  const { auctionData = undefined, bidHistory = undefined } =
-    auctionDetails || {};
+  const auctionDetails = tokenId
+    ? await getAuctionDetails(tokenId)
+    : emptyAuctionDetails;
+  const { auctionData, bidHistory } = auctionDetails;
+
+  const nftDetails = tokenId ? await getNFT(tokenId, true) : undefined;
+
+  const nftOwner = nftDetails ? nftDetails.owner : undefined;
+
+  const isActiveAuction = auctionData
+    ? auctionData.auctionOwner.length > 1 && !auctionData.claimed
+    : false;
 
   return (
     <div className="nft-card bg-white shadow-lg rounded-lg overflow-hidden">
-      {auctionData && tokenId && (
+      {isActiveAuction && tokenId ? (
         <div className="flex-col">
           <h3 className="text-xl font-semibold text-center mt-2">
             Auction Info
@@ -38,10 +49,17 @@ const AuctionCard: React.FC<AuctionCardProps> = async ({ tokenId }) => {
                 </p>
               </div>
               <div className="flex flex-row text-sm truncate overflow-hidden">
+                <h3 className="font-semibold">Min. Price Increase:</h3>
+                <p className="truncate">
+                  {" "}
+                  {BigInt(auctionData.minPriceDifference).toString()}{" "}
+                </p>
+              </div>
+              <div className="flex flex-row text-sm truncate overflow-hidden">
                 <h3 className="font-semibold">Buyout Price:</h3>
                 <p className="truncate">
                   {" "}
-                  {BigInt(auctionData.buyoutPrice).toString()}{" "}
+                  {BigInt(auctionData?.buyoutPrice).toString()}{" "}
                 </p>
               </div>
               <div className="flex flex-row text-sm truncate overflow-hidden">
@@ -65,6 +83,12 @@ const AuctionCard: React.FC<AuctionCardProps> = async ({ tokenId }) => {
             </div>
             {/* Repeat for other metadata details, each in its own div with border-t */}
           </div>
+        </div>
+      ) : (
+        <div>
+          {nftOwner && tokenId && (
+            <CreateAuctionForm owner={nftOwner} tokenId={tokenId} />
+          )}
         </div>
       )}
     </div>
